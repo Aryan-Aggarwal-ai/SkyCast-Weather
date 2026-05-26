@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About – SkyCast</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="settings.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body id="app-body" class="theme-dark">
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <button class="drawer-close" onclick="closeMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="drawer-logo"><i class="fa-solid fa-cloud-sun-rain"></i> Sky<strong>Cast</strong></div>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="forecast.html"><i class="fa-solid fa-calendar-days"></i> Forecast</a>
+    <a href="suggestions.html"><i class="fa-solid fa-brain"></i> Suggestions</a>
+    <a href="about.html" class="active"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+  </div>
+
+  <section id="page-about" class="page active">
+    <nav class="navbar navbar-inner">
+      <div class="nav-logo" onclick="window.location.href='index.html'"><i class="fa-solid fa-cloud-sun-rain"></i><span>Sky<strong>Cast</strong></span></div>
+      <ul class="nav-links">
+        <li><a href="index.html"       class="nav-link">Home</a></li>
+        <li><a href="dashboard.html"   class="nav-link">Dashboard</a></li>
+        <li><a href="forecast.html"    class="nav-link">Forecast</a></li>
+        <li><a href="suggestions.html" class="nav-link">Suggestions</a></li>
+        <li><a href="about.html"       class="nav-link active-link">About</a></li>
+        <li><a href="settings.html"    class="nav-link"><i class="fa-solid fa-gear"></i></a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-theme" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn-menu"  onclick="openMobileNav()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+
+    <div class="page-content about-page">
+      <div class="about-hero glass-card">
+        <i class="fa-solid fa-cloud-sun-rain about-big-icon"></i>
+        <h1>About <span class="gradient-text">SkyCast</span></h1>
+        <p>A Smart Real-Time Weather Dashboard with a Behavioral Recommendation Engine built with HTML, CSS &amp; JavaScript using the Open-Meteo API (100% free, no API key required).</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-feat glass-card"><i class="fa-solid fa-satellite-dish fa-2x about-feat-icon"></i><h4>Real-Time Data</h4><p>Powered by Open-Meteo — live temperature, humidity, wind speed, UV index, air quality and more.</p></div>
+        <div class="about-feat glass-card"><i class="fa-solid fa-brain fa-2x about-feat-icon"></i><h4>Smart Engine</h4><p>Conditional logic converts raw data into behavioral suggestions, clothing tips, and health alerts.</p></div>
+        <div class="about-feat glass-card"><i class="fa-solid fa-location-crosshairs fa-2x about-feat-icon"></i><h4>Location Aware</h4><p>Auto-detects GPS location or searches any of 200,000+ cities worldwide.</p></div>
+        <div class="about-feat glass-card"><i class="fa-solid fa-palette fa-2x about-feat-icon"></i><h4>Dynamic Themes</h4><p>Colors change based on weather and time — sunny, rainy, stormy, snowy, night modes.</p></div>
+        <div class="about-feat glass-card"><i class="fa-solid fa-mobile-screen fa-2x about-feat-icon"></i><h4>Responsive</h4><p>Fully responsive across mobile, tablet and desktop using modern CSS Grid and Flexbox.</p></div>
+        <div class="about-feat glass-card"><i class="fa-solid fa-gear fa-2x about-feat-icon"></i><h4>Customisable</h4><p>Settings page lets you control theme, units, accent colour, font size, default city, and more.</p></div>
+      </div>
+
+      <div class="tech-block glass-card">
+        <h3><i class="fa-solid fa-code"></i> Tech Stack</h3>
+        <div class="tech-pills">
+          <span>HTML5</span><span>CSS3</span><span>JavaScript ES6+</span>
+          <span>Open-Meteo API</span><span>Fetch API</span><span>Geolocation API</span>
+          <span>Canvas API</span><span>Font Awesome 6</span><span>Google Fonts</span>
+        </div>
+      </div>
+
+      <div class="flow-block glass-card">
+        <h3><i class="fa-solid fa-diagram-project"></i> How It Works</h3>
+        <div class="flow-steps">
+          <div class="flow-step"><div class="flow-num">1</div><strong>Detect / Search</strong><br/>GPS or city name</div>
+          <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="flow-step"><div class="flow-num">2</div><strong>Fetch Data</strong><br/>Async API call</div>
+          <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="flow-step"><div class="flow-num">3</div><strong>Process</strong><br/>Recommendation engine</div>
+          <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="flow-step"><div class="flow-num">4</div><strong>Display</strong><br/>All pages update</div>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <p>Built with <i class="fa-solid fa-heart" style="color:#f43f5e"></i> By Aryan - Jasjeet - Aarush</p>
+        <p style="opacity:0.4;font-size:0.8rem;margin-top:0.4rem">SkyCast © 2025 · Smart Weather Intelligence</p>
+      </footer>
+    </div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    (function(){ const s=loadSettings(); applySettings(s); })();
+  </script>
+</body>
+</html>

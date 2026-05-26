@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings – SkyCast</title>
+  <meta name="description" content="Customise SkyCast — theme, units, accent colour, default city and more."/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="settings.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body id="app-body" class="theme-dark">
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <button class="drawer-close" onclick="closeMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="drawer-logo"><i class="fa-solid fa-cloud-sun-rain"></i> Sky<strong>Cast</strong></div>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="forecast.html"><i class="fa-solid fa-calendar-days"></i> Forecast</a>
+    <a href="suggestions.html"><i class="fa-solid fa-brain"></i> Suggestions</a>
+    <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="settings.html" class="active"><i class="fa-solid fa-gear"></i> Settings</a>
+  </div>
+
+  <section id="page-settings" class="page active">
+    <nav class="navbar navbar-inner">
+      <div class="nav-logo" onclick="window.location.href='index.html'"><i class="fa-solid fa-cloud-sun-rain"></i><span>Sky<strong>Cast</strong></span></div>
+      <ul class="nav-links">
+        <li><a href="index.html"       class="nav-link">Home</a></li>
+        <li><a href="dashboard.html"   class="nav-link">Dashboard</a></li>
+        <li><a href="forecast.html"    class="nav-link">Forecast</a></li>
+        <li><a href="suggestions.html" class="nav-link">Suggestions</a></li>
+        <li><a href="about.html"       class="nav-link">About</a></li>
+        <li><a href="settings.html"    class="nav-link active-link"><i class="fa-solid fa-gear"></i> Settings</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-theme" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn-menu"  onclick="openMobileNav()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+
+    <div class="page-content settings-page">
+
+      <!-- Header -->
+      <div class="settings-header">
+        <div class="settings-header-icon"><i class="fa-solid fa-sliders"></i></div>
+        <div>
+          <h1>Settings</h1>
+          <p>Customise your SkyCast experience</p>
+        </div>
+        <div class="settings-header-actions">
+          <button class="btn-settings-reset" id="btnReset" onclick="resetSettings()">
+            <i class="fa-solid fa-rotate-left"></i> Reset
+          </button>
+          <button class="btn-settings-save" id="btnSave" onclick="saveAllSettings()">
+            <i class="fa-solid fa-floppy-disk"></i> Save
+          </button>
+        </div>
+      </div>
+
+      <!-- Save Toast -->
+      <div class="save-toast hidden" id="saveToast">
+        <i class="fa-solid fa-circle-check"></i> Settings saved!
+      </div>
+
+      <div class="settings-grid">
+
+        <!-- ── APPEARANCE ─────────────────────────────────── -->
+        <div class="settings-card glass-card">
+          <div class="settings-card-header">
+            <i class="fa-solid fa-palette"></i>
+            <h2>Appearance</h2>
+          </div>
+
+          <!-- Theme -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Theme</span>
+              <span class="setting-desc">Light, dark, or auto based on time of day</span>
+            </div>
+            <div class="seg-control" id="themeControl">
+              <button data-val="dark"  onclick="selectSeg('themeControl','dark')"><i class="fa-solid fa-moon"></i> Dark</button>
+              <button data-val="light" onclick="selectSeg('themeControl','light')"><i class="fa-solid fa-sun"></i> Light</button>
+              <button data-val="auto"  onclick="selectSeg('themeControl','auto')"><i class="fa-solid fa-clock"></i> Auto</button>
+            </div>
+          </div>
+
+          <!-- Accent Colour -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Accent Colour</span>
+              <span class="setting-desc">Primary highlight colour used across the app</span>
+            </div>
+            <div class="color-swatches" id="accentControl">
+              <button class="swatch swatch-cyan"   data-val="cyan"   onclick="selectSwatch('cyan')"   title="Cyan"></button>
+              <button class="swatch swatch-purple" data-val="purple" onclick="selectSwatch('purple')" title="Purple"></button>
+              <button class="swatch swatch-green"  data-val="green"  onclick="selectSwatch('green')"  title="Green"></button>
+              <button class="swatch swatch-orange" data-val="orange" onclick="selectSwatch('orange')" title="Orange"></button>
+              <button class="swatch swatch-rose"   data-val="rose"   onclick="selectSwatch('rose')"   title="Rose"></button>
+              <button class="swatch swatch-gold"   data-val="gold"   onclick="selectSwatch('gold')"   title="Gold"></button>
+            </div>
+          </div>
+
+          <!-- Font Size -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Font Size</span>
+              <span class="setting-desc">Adjust text size across all pages</span>
+            </div>
+            <div class="seg-control" id="fontControl">
+              <button data-val="small"  onclick="selectSeg('fontControl','small')">Small</button>
+              <button data-val="medium" onclick="selectSeg('fontControl','medium')">Medium</button>
+              <button data-val="large"  onclick="selectSeg('fontControl','large')">Large</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── UNITS & DATA ────────────────────────────────── -->
+        <div class="settings-card glass-card">
+          <div class="settings-card-header">
+            <i class="fa-solid fa-ruler-combined"></i>
+            <h2>Units &amp; Data</h2>
+          </div>
+
+          <!-- Temperature -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Temperature</span>
+              <span class="setting-desc">Celsius or Fahrenheit</span>
+            </div>
+            <div class="seg-control" id="tempControl">
+              <button data-val="C" onclick="selectSeg('tempControl','C')">°C Celsius</button>
+              <button data-val="F" onclick="selectSeg('tempControl','F')">°F Fahrenheit</button>
+            </div>
+          </div>
+
+          <!-- Wind Speed -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Wind Speed</span>
+              <span class="setting-desc">Unit for wind measurements</span>
+            </div>
+            <div class="seg-control" id="windControl">
+              <button data-val="ms"  onclick="selectSeg('windControl','ms')">m/s</button>
+              <button data-val="kmh" onclick="selectSeg('windControl','kmh')">km/h</button>
+              <button data-val="mph" onclick="selectSeg('windControl','mph')">mph</button>
+            </div>
+          </div>
+
+          <!-- Pressure -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Pressure</span>
+              <span class="setting-desc">Unit for atmospheric pressure</span>
+            </div>
+            <div class="seg-control" id="pressControl">
+              <button data-val="hpa"  onclick="selectSeg('pressControl','hpa')">hPa</button>
+              <button data-val="inhg" onclick="selectSeg('pressControl','inhg')">inHg</button>
+              <button data-val="mmhg" onclick="selectSeg('pressControl','mmhg')">mmHg</button>
+            </div>
+          </div>
+
+          <!-- Time Format -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Time Format</span>
+              <span class="setting-desc">12-hour (AM/PM) or 24-hour clock</span>
+            </div>
+            <div class="seg-control" id="timeControl">
+              <button data-val="12h" onclick="selectSeg('timeControl','12h')">12h (AM/PM)</button>
+              <button data-val="24h" onclick="selectSeg('timeControl','24h')">24h</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── LOCATION ────────────────────────────────────── -->
+        <div class="settings-card glass-card">
+          <div class="settings-card-header">
+            <i class="fa-solid fa-location-crosshairs"></i>
+            <h2>Location</h2>
+          </div>
+
+          <!-- Default City -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Default City</span>
+              <span class="setting-desc">Auto-loaded when GPS is off (leave blank to disable)</span>
+            </div>
+            <div class="setting-input-wrap">
+              <i class="fa-solid fa-city"></i>
+              <input type="text" id="defaultCityInput" placeholder="e.g. Delhi, London, Tokyo…" autocomplete="off"/>
+            </div>
+          </div>
+
+          <!-- Auto-detect -->
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Auto-detect Location</span>
+              <span class="setting-desc">Request GPS on startup for instant local weather</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="autoDetectToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ── DASHBOARD DISPLAY ───────────────────────────── -->
+        <div class="settings-card glass-card">
+          <div class="settings-card-header">
+            <i class="fa-solid fa-table-cells-large"></i>
+            <h2>Dashboard Display</h2>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title"><i class="fa-solid fa-lungs"></i> Air Quality (AQI) Card</span>
+              <span class="setting-desc">Show the AQI ring on the dashboard</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="showAQIToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title"><i class="fa-solid fa-sun"></i> UV Index Card</span>
+              <span class="setting-desc">Show the UV index progress bar card</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="showUVToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title"><i class="fa-solid fa-compass"></i> Wind Compass Card</span>
+              <span class="setting-desc">Show the animated wind direction compass</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="showCompassToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title"><i class="fa-solid fa-gauge-high"></i> Pressure Card</span>
+              <span class="setting-desc">Show atmospheric pressure on the dashboard</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="showPressureToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title"><i class="fa-regular fa-clock"></i> Hourly Forecast Strip</span>
+              <span class="setting-desc">Show the next 12 hours on the Forecast page</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="showHourlyToggle"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ── LIVE PREVIEW ───────────────────────────────── -->
+        <div class="settings-card glass-card settings-preview-card">
+          <div class="settings-card-header">
+            <i class="fa-solid fa-eye"></i>
+            <h2>Live Preview</h2>
+          </div>
+          <div class="preview-box" id="previewBox">
+            <div class="preview-weather-card">
+              <div class="preview-city" id="previewCity">Delhi, IN</div>
+              <div class="preview-temp" id="previewTemp">32°C</div>
+              <div class="preview-emoji">☀️</div>
+              <div class="preview-desc">Partly cloudy</div>
+              <div class="preview-pills">
+                <span><i class="fa-solid fa-droplet"></i> 58%</span>
+                <span><i class="fa-solid fa-wind"></i> 3.2 m/s</span>
+                <span><i class="fa-solid fa-eye"></i> 12 km</span>
+              </div>
+            </div>
+          </div>
+          <p class="preview-note">Preview updates as you change settings above</p>
+        </div>
+
+        <!-- ── ABOUT / DATA ───────────────────────────────── -->
+        <div class="settings-card glass-card">
+          <div class="settings-card-header">
+            <i class="fa-solid fa-database"></i>
+            <h2>Data &amp; Storage</h2>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-label">
+              <span class="setting-title">Cached Weather Data</span>
+              <span class="setting-desc">Last fetched city and weather stored locally</span>
+            </div>
+            <div class="cache-info" id="cacheInfo">Checking…</div>
+          </div>
+
+          <div class="setting-row" style="margin-top:.5rem">
+            <div class="setting-label">
+              <span class="setting-title">Clear Cache</span>
+              <span class="setting-desc">Remove all locally stored weather data</span>
+            </div>
+            <button class="btn-danger-sm" onclick="clearCache()">
+              <i class="fa-solid fa-trash"></i> Clear
+            </button>
+          </div>
+
+          <div class="setting-row" style="margin-top:.5rem">
+            <div class="setting-label">
+              <span class="setting-title">Export Settings</span>
+              <span class="setting-desc">Download your settings as a JSON file</span>
+            </div>
+            <button class="btn-outline-sm" onclick="exportSettings()">
+              <i class="fa-solid fa-download"></i> Export
+            </button>
+          </div>
+        </div>
+
+      </div><!-- /settings-grid -->
+
+      <!-- Bottom Save Bar -->
+      <div class="settings-bottom-bar">
+        <span class="unsaved-label hidden" id="unsavedLabel"><i class="fa-solid fa-circle-exclamation"></i> You have unsaved changes</span>
+        <button class="btn-settings-reset" onclick="resetSettings()"><i class="fa-solid fa-rotate-left"></i> Reset to Defaults</button>
+        <button class="btn-settings-save"  onclick="saveAllSettings()"><i class="fa-solid fa-floppy-disk"></i> Save Settings</button>
+      </div>
+
+    </div><!-- /page-content -->
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

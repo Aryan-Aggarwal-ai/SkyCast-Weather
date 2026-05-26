@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>7-Day Forecast – SkyCast</title>
+  <meta name="description" content="7-day weather forecast and hourly breakdown powered by SkyCast and Open-Meteo."/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="settings.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body id="app-body" class="theme-dark">
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <button class="drawer-close" onclick="closeMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="drawer-logo"><i class="fa-solid fa-cloud-sun-rain"></i> Sky<strong>Cast</strong></div>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="forecast.html" class="active"><i class="fa-solid fa-calendar-days"></i> Forecast</a>
+    <a href="suggestions.html"><i class="fa-solid fa-brain"></i> Suggestions</a>
+    <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+  </div>
+
+  <section id="page-forecast" class="page active">
+    <nav class="navbar navbar-inner">
+      <div class="nav-logo" onclick="window.location.href='index.html'"><i class="fa-solid fa-cloud-sun-rain"></i><span>Sky<strong>Cast</strong></span></div>
+      <ul class="nav-links">
+        <li><a href="index.html"       class="nav-link">Home</a></li>
+        <li><a href="dashboard.html"   class="nav-link">Dashboard</a></li>
+        <li><a href="forecast.html"    class="nav-link active-link">Forecast</a></li>
+        <li><a href="suggestions.html" class="nav-link">Suggestions</a></li>
+        <li><a href="about.html"       class="nav-link">About</a></li>
+        <li><a href="settings.html"    class="nav-link"><i class="fa-solid fa-gear"></i></a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-theme" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn-menu"  onclick="openMobileNav()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+
+    <div class="page-content">
+      <!-- Search bar -->
+      <div class="dash-controls" style="margin-bottom:1rem">
+        <div class="dash-search-wrap" style="position:relative">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="dashSearchInput" placeholder="Search city for forecast…"
+            onkeydown="if(event.key==='Enter') dashSearch()"
+            oninput="filterCitySuggestions(this.value)" autocomplete="off"/>
+          <button onclick="dashSearch()">Search</button>
+          <div class="city-dropdown hidden" id="cityDropdown"></div>
+        </div>
+        <button class="btn-outline" onclick="getLocation()"><i class="fa-solid fa-location-crosshairs"></i> My Location</button>
+      </div>
+
+      <div class="error-banner hidden" id="errorBanner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="errorMsg">Something went wrong.</span>
+        <button onclick="document.getElementById('errorBanner').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loader-ring"></div><p>Fetching forecast data…</p>
+      </div>
+
+      <div class="section-header">
+        <h2><i class="fa-solid fa-calendar-days"></i> 7-Day Forecast</h2>
+        <p class="section-city" id="forecastCityLabel">—</p>
+      </div>
+
+      <!-- Hourly Strip -->
+      <h3 class="sub-heading" data-setting="showHourly"><i class="fa-regular fa-clock"></i> Hourly (Next 12h)</h3>
+      <div class="hourly-scroll-wrap" data-setting="showHourly">
+        <div class="hourly-scroll" id="hourlyScroll">
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;opacity:0.5"><div class="spinner"></div> Loading hourly…</div>
+        </div>
+      </div>
+
+      <!-- Daily Grid -->
+      <h3 class="sub-heading"><i class="fa-solid fa-calendar-week"></i> Daily</h3>
+      <div class="forecast-grid" id="forecastGrid">
+        <div style="display:flex;align-items:center;gap:1rem;padding:1rem;opacity:0.5"><div class="spinner"></div> Loading forecast…</div>
+      </div>
+
+      <!-- Temp Chart -->
+      <h3 class="sub-heading"><i class="fa-solid fa-chart-line"></i> Temperature Trend</h3>
+      <div class="chart-wrap glass-card">
+        <canvas id="tempChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="forecast.js"></script>
+</body>
+</html>

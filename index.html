@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkyCast – Smart Weather Dashboard</title>
+  <meta name="description" content="SkyCast — Real-time weather with AI-powered behavioral suggestions. Know your sky, plan your day."/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="settings.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body id="app-body" class="theme-dark">
+
+  <!-- Mobile Nav Drawer -->
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <button class="drawer-close" onclick="closeMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="drawer-logo"><i class="fa-solid fa-cloud-sun-rain"></i> Sky<strong>Cast</strong></div>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="forecast.html"><i class="fa-solid fa-calendar-days"></i> Forecast</a>
+    <a href="suggestions.html"><i class="fa-solid fa-brain"></i> Suggestions</a>
+    <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+  </div>
+
+  <!-- HERO PAGE -->
+  <section id="page-hero" class="page active">
+    <div class="bg-canvas" id="bgCanvas">
+      <div class="bg-orb orb1"></div>
+      <div class="bg-orb orb2"></div>
+      <div class="bg-orb orb3"></div>
+      <div class="rain-layer hidden" id="rainLayer"></div>
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-logo" onclick="window.location.href='index.html'">
+        <i class="fa-solid fa-cloud-sun-rain"></i><span>Sky<strong>Cast</strong></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html"       class="nav-link active-link">Home</a></li>
+        <li><a href="dashboard.html"   class="nav-link">Dashboard</a></li>
+        <li><a href="forecast.html"    class="nav-link">Forecast</a></li>
+        <li><a href="suggestions.html" class="nav-link">Suggestions</a></li>
+        <li><a href="about.html"       class="nav-link">About</a></li>
+        <li><a href="settings.html"    class="nav-link"><i class="fa-solid fa-gear"></i></a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-theme" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn-menu"  onclick="openMobileNav()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+
+    <div class="hero-layout">
+      <div class="hero-left">
+        <div class="hero-badge"><i class="fa-solid fa-satellite-dish"></i> Live Weather Intelligence</div>
+        <h1 class="hero-title">Know Your Sky.<br/><span class="gradient-text">Plan Your Day.</span></h1>
+        <p class="hero-subtitle">Real-time weather + AI-powered behavioral suggestions. From morning runs to weekend trips — SkyCast guides you.</p>
+
+        <div class="hero-search">
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="heroSearchInput" placeholder="Search city… e.g. Delhi, Tokyo, Paris"
+              autocomplete="off"
+              onkeydown="if(event.key==='Enter') heroSearch()"
+              oninput="filterCitySuggestions(this.value)"/>
+            <button id="heroSearchBtn" onclick="heroSearch()"><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="city-dropdown hidden" id="cityDropdown"></div>
+          </div>
+          <button class="btn-locate" onclick="getLocation()"><i class="fa-solid fa-location-crosshairs"></i> Use My Location</button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-pill"><i class="fa-solid fa-globe"></i> 200K+ Cities</div>
+          <div class="stat-pill"><i class="fa-solid fa-bolt"></i> Real-Time Data</div>
+          <div class="stat-pill"><i class="fa-solid fa-brain"></i> Smart Suggestions</div>
+        </div>
+
+        <div class="popular-cities-wrap">
+          <div class="popular-label"><i class="fa-solid fa-fire"></i> Popular Cities</div>
+          <div class="popular-cities-scroll" id="heroCityChips"></div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="hero-weather-card glass-card" id="heroCard">
+          <div class="hero-card-loading" id="heroCardLoading">
+            <div class="spinner"></div>
+            <p>Detecting location…</p>
+          </div>
+          <div class="hero-card-data hidden" id="heroCardData">
+            <div class="hc-top">
+              <div>
+                <div class="hc-city" id="hcCity">—</div>
+                <div class="hc-date" id="hcDate">—</div>
+              </div>
+              <div class="hc-uv-badge" id="hcUvBadge">UV —</div>
+            </div>
+            <div class="hc-main">
+              <div class="hc-icon" id="hcIcon"><i class="fa-solid fa-sun"></i></div>
+              <div class="hc-temp" id="hcTemp">—</div>
+            </div>
+            <div class="hc-desc" id="hcDesc">—</div>
+            <div class="hc-divider"></div>
+            <div class="hc-row">
+              <div class="hc-stat"><i class="fa-solid fa-droplet"></i><span id="hcHumidity">—</span>%<small>Humidity</small></div>
+              <div class="hc-stat"><i class="fa-solid fa-wind"></i><span id="hcWind">—</span><small>Wind</small></div>
+              <div class="hc-stat"><i class="fa-solid fa-eye"></i><span id="hcVis">—</span><small>km Vis.</small></div>
+            </div>
+            <div class="hc-quick-rec" id="hcQuickRec"></div>
+            <a href="dashboard.html" class="hc-view-btn">View Full Dashboard <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" onclick="window.location.href='dashboard.html'">
+      <span>Dashboard</span><i class="fa-solid fa-chevron-down bounce"></i>
+    </div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

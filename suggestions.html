@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suggestions – SkyCast</title>
+  <meta name="description" content="AI-powered behavioral suggestions based on real-time weather conditions."/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="settings.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body id="app-body" class="theme-dark">
+
+  <div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <button class="drawer-close" onclick="closeMobileNav()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="drawer-logo"><i class="fa-solid fa-cloud-sun-rain"></i> Sky<strong>Cast</strong></div>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+    <a href="forecast.html"><i class="fa-solid fa-calendar-days"></i> Forecast</a>
+    <a href="suggestions.html" class="active"><i class="fa-solid fa-brain"></i> Suggestions</a>
+    <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+  </div>
+
+  <section id="page-recommend" class="page active">
+    <nav class="navbar navbar-inner">
+      <div class="nav-logo" onclick="window.location.href='index.html'"><i class="fa-solid fa-cloud-sun-rain"></i><span>Sky<strong>Cast</strong></span></div>
+      <ul class="nav-links">
+        <li><a href="index.html"       class="nav-link">Home</a></li>
+        <li><a href="dashboard.html"   class="nav-link">Dashboard</a></li>
+        <li><a href="forecast.html"    class="nav-link">Forecast</a></li>
+        <li><a href="suggestions.html" class="nav-link active-link">Suggestions</a></li>
+        <li><a href="about.html"       class="nav-link">About</a></li>
+        <li><a href="settings.html"    class="nav-link"><i class="fa-solid fa-gear"></i></a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-theme" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn-menu"  onclick="openMobileNav()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+
+    <div class="page-content">
+      <!-- Search bar -->
+      <div class="dash-controls" style="margin-bottom:1rem">
+        <div class="dash-search-wrap" style="position:relative">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="dashSearchInput" placeholder="Search city for suggestions…"
+            onkeydown="if(event.key==='Enter') dashSearch()"
+            oninput="filterCitySuggestions(this.value)" autocomplete="off"/>
+          <button onclick="dashSearch()">Search</button>
+          <div class="city-dropdown hidden" id="cityDropdown"></div>
+        </div>
+        <button class="btn-outline" onclick="getLocation()"><i class="fa-solid fa-location-crosshairs"></i> My Location</button>
+      </div>
+
+      <div class="error-banner hidden" id="errorBanner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="errorMsg">Something went wrong.</span>
+        <button onclick="document.getElementById('errorBanner').classList.add('hidden')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="loader-ring"></div><p>Analysing conditions…</p>
+      </div>
+
+      <div class="section-header">
+        <h2><i class="fa-solid fa-brain"></i> Behavioral Recommendation Engine</h2>
+        <p class="section-city" id="recCityLabel">Fetch weather to see suggestions</p>
+      </div>
+
+      <!-- Score Card -->
+      <div class="score-card glass-card">
+        <div class="score-ring-wrap">
+          <svg viewBox="0 0 120 120" class="score-svg">
+            <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+            <circle cx="60" cy="60" r="50" fill="none" stroke="url(#sg)" stroke-width="10"
+              stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"
+              id="scoreCircle" transform="rotate(-90 60 60)"/>
+            <defs>
+              <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   style="stop-color:#00e5ff"/>
+                <stop offset="100%" style="stop-color:#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="score-inner">
+            <div class="score-num" id="scoreNum">—</div>
+            <div class="score-denom">/100</div>
+          </div>
+        </div>
+        <div class="score-text-wrap">
+          <h3 id="scoreTitle">Weather Score</h3>
+          <p  id="scoreDesc">Search a city to see your personalised score.</p>
+          <div class="score-badge" id="scoreBadge">—</div>
+        </div>
+      </div>
+
+      <!-- Activity Suggestions -->
+      <h3 class="sub-heading"><i class="fa-solid fa-list-check"></i> Activity Suggestions</h3>
+      <div class="rec-grid" id="recGrid">
+        <div style="display:flex;align-items:center;gap:1rem;padding:1rem;opacity:0.5"><div class="spinner"></div> Analysing conditions…</div>
+      </div>
+
+      <!-- What to Wear -->
+      <div class="wear-card glass-card">
+        <h3><i class="fa-solid fa-shirt"></i> What to Wear Today</h3>
+        <div class="wear-grid" id="wearItems"><div style="opacity:0.5"><div class="spinner"></div></div></div>
+      </div>
+
+      <!-- Health Alerts -->
+      <div class="health-card glass-card">
+        <h3><i class="fa-solid fa-heart-pulse"></i> Health &amp; Safety Alerts</h3>
+        <div id="alertsList"><div style="opacity:0.5"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="suggestions.js"></script>
+</body>
+</html>
